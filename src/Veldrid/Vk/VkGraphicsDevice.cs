@@ -567,6 +567,9 @@ namespace Veldrid.Vk
                     instanceLayers.Add(CommonStrings.KhronosValidationLayerName);
                 }
             }
+            var portStr = new FixedUtf8String("VK_KHR_portability_enumeration");
+            instanceExtensions.Add(portStr);
+            tempStrings.Add(portStr);
 
             instanceCI.enabledExtensionCount = instanceExtensions.Count;
             instanceCI.ppEnabledExtensionNames = (byte**)instanceExtensions.Data;
@@ -576,6 +579,7 @@ namespace Veldrid.Vk
             {
                 instanceCI.ppEnabledLayerNames = (byte**)instanceLayers.Data;
             }
+            instanceCI.flags |= 1;
 
             VkResult result = vkCreateInstance(ref instanceCI, null, out _instance);
             CheckResult(result);
