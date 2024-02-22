@@ -14,6 +14,7 @@ namespace Veldrid.Vulkan
 {
     internal sealed unsafe class VkGraphicsDevice : GraphicsDevice
     {
+        private const uint VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR = 0x00000001;
         private static readonly FixedUtf8String s_name = "Veldrid-VkGraphicsDevice";
         private static readonly Lazy<bool> s_isSupported = new(CheckIsSupported, isThreadSafe: true);
 
@@ -460,6 +461,12 @@ namespace Veldrid.Vulkan
             if (availableInstanceExtensions.Contains(CommonStrings.VK_KHR_portability_subset))
             {
                 _surfaceExtensions.Add(CommonStrings.VK_KHR_portability_subset);
+            }
+
+            if (availableInstanceExtensions.Contains(CommonStrings.VK_KHR_portability_enumeration))
+            {
+                instanceExtensions.Add(CommonStrings.VK_KHR_portability_enumeration);
+                instanceCI.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
             }
 
             if (availableInstanceExtensions.Contains(CommonStrings.VK_KHR_SURFACE_EXTENSION_NAME))
